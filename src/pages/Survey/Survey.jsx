@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useFetch } from "../../utils/hooks";
 import { SurveyContext } from "../../utils/context";
 import { Loader } from "../../utils/style/Loader";
 import { ContainerQuestion, TittleQuestion, ContentQuestion, 
          ContainerArrow, ContentError, ContainerReply, ReplyBox } from './SurveyStyle'
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../utils/selectors";
+import { useSelector, useStore } from "react-redux";
+import { selectSurvey, selectTheme } from "../../utils/selectors";
+import { fetchOrUpdateSurvey } from "../../features/survey";
 
 function Survey(){
 
@@ -17,12 +17,25 @@ function Survey(){
 
     const { answers, saveAnswers } = useContext(SurveyContext);
 
-    const { data, isLoading, error } = useFetch('http://localhost:8000/survey'); 
-    const { surveyData } = data;
+
+    // on récupère le store grâce au hook useStore()
+    const store = useStore();
+
+    // on utilise useEffect pour lancer la requête au chargement du composant
+    useEffect(() => {
+        // on exécute notre action asynchrone avec le store en paramètre
+        fetchOrUpdateSurvey(store);
+    }, [store]);
+
+    const survey = useSelector(selectSurvey);
+
+    const surveyData = survey.data?.surveyData;   
+    const isLoading = survey.status === 'void' || survey.status === 'pending';
+    
 
     const theme = useSelector(selectTheme);
 
-    if(error) {
+    if(survey.status === 'rejected') {
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }
     

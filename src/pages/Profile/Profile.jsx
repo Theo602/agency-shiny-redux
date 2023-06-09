@@ -1,22 +1,31 @@
-import { useFetch } from "../../utils/hooks";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../utils/style/Loader";
 import { FetchError, ContainerProfile, FigureProfile, ImgProfile, DetailProfile,
          ContainerTitle, TitleProfile, LocationProfile, JobTitle, ContainerSkills,
          SkillProfile, Availability, PriceProfile } from './ProfileStyle';
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../utils/selectors";
+import { useSelector, useStore } from "react-redux";
+import { selectProfile, selectTheme } from "../../utils/selectors";
+import { useEffect } from "react";
+import { fetchOrUpdateProfile } from "../../features/profile";
 
 
 function Profile(){
-  
-    const { id } = useParams();
-    const { data, isLoading, error } = useFetch(`http://localhost:8000/freelance?id=${id}`); 
-    const { freelanceData } = data; 
-    const theme = useSelector(selectTheme);
-  
 
-    if(error) {
+    const store = useStore();
+    const { id: freelanceId } = useParams();
+    const theme = useSelector(selectTheme);
+       
+    useEffect(() => {
+        fetchOrUpdateProfile(freelanceId, store);
+    }, [freelanceId, store]);
+    
+    const profile = useSelector(selectProfile(freelanceId))
+    const freelanceData = profile.data?.freelanceData ?? {};   
+    const { picture, name, location, tjm, job, skills, available, id } = freelanceData
+
+    const isLoading = profile.status === 'void' || profile.status === 'pending';
+ 
+    if(profile.status === 'rejected') {
         return <FetchError>Oups il ya un problème</FetchError>
     }
 
@@ -34,31 +43,31 @@ function Profile(){
                     <>
 
                         <FigureProfile>
-                            <ImgProfile src={freelanceData.picture}  alt={freelanceData.name}/> 
+                            <ImgProfile src={picture}  alt={name}/> 
                         </FigureProfile>
 
                         <DetailProfile>
 
                             <ContainerTitle>
-                                <TitleProfile theme={theme}>{freelanceData.name}</TitleProfile>
-                                <LocationProfile theme={theme}>{freelanceData.location}</LocationProfile>
+                                <TitleProfile theme={theme}>{name}</TitleProfile>
+                                <LocationProfile theme={theme}>{location}</LocationProfile>
                             </ContainerTitle>
 
-                            <JobTitle theme={theme}>{freelanceData.job}</JobTitle>
+                            <JobTitle theme={theme}>{job}</JobTitle>
 
                             <ContainerSkills>
-                                {freelanceData.skills && freelanceData.skills.map((skill) => (
+                                {skills && freelanceData.skills.map((skill) => (
                                     <SkillProfile key={`skill-${skill}-${id}`} theme={theme}>
                                         {skill}
                                     </SkillProfile>
                                 ))}
                             </ContainerSkills>
 
-                            <Availability theme={theme} available={freelanceData.available}>
-                                    {freelanceData.available ? 'Disponible maintenant' : 'Indisponible'}
+                            <Availability theme={theme} available={available}>
+                                    {available ? 'Disponible maintenant' : 'Indisponible'}
                             </Availability>
 
-                            <PriceProfile theme={theme}>{freelanceData.tjm} € / jour</PriceProfile>
+                            <PriceProfile theme={theme}>{tjm} € / jour</PriceProfile>
 
                         </DetailProfile>
 

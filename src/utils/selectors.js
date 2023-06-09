@@ -1,2 +1,13 @@
 // Fonction qui récupere le thème de l'application
 export const selectTheme = (state) => state.theme;
+
+// Fonction qui récupere les données des freelances
+export const selectFreelances = (state) => state.freelances;
+
+// Fonction qui récupere les données des profiles 
+const voidFreelance = { status: 'void' }
+
+export const selectProfile = (freelanceId) => (state) => state.profile[freelanceId] ?? voidFreelance;
+
+// Fonction qui récupere les données des questions
+export const selectSurvey = (state) => state.survey;

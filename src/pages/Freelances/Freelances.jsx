@@ -1,18 +1,30 @@
-import { useFetch } from "../../utils/hooks";
 import Cart from '../../components/Cart/Cart';
 import { Loader } from "../../utils/style/Loader";
 import { ContentError, ContainerFreelance, TitleFreelance, TextFreelance, CardsContainer, LinkCart} from './FreelancesStyle'
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../utils/selectors";
+import { useSelector, useStore } from "react-redux";
+import { selectFreelances, selectTheme } from "../../utils/selectors";
+import { useEffect } from "react";
+import { fetchOrUpdateFreelances } from "../../features/freelances";
 
 
 function Freelances(){
-     
-    const { data, isLoading, error } = useFetch('http://localhost:8000/freelances'); 
-    const { freelancersList } = data;   
-    const theme = useSelector(selectTheme);
     
-    if(error) {
+    // on récupère le store grâce au hook useStore()
+    const store = useStore();
+
+    // on utilise useEffect pour lancer la requête au chargement du composant
+    useEffect(() => {
+        // on exécute notre action asynchrone avec le store en paramètre
+        fetchOrUpdateFreelances(store);
+    }, [store]);
+
+    const theme = useSelector(selectTheme);
+    const freelances = useSelector(selectFreelances);
+    
+    const freelancersList = freelances.data?.freelancersList;   
+    const isLoading = freelances.status === 'void' || freelances.status === 'pending';
+    
+    if(freelances.status === 'rejected') {
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }
 

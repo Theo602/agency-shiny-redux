@@ -8,7 +8,7 @@ function NavBarResponsive({ navOpen, setNavOpen }){
 
     const theme = useSelector(selectTheme);
     const [ checkWidth, setCheckWidth] = useState(window.innerWidth)
-
+    
     useEffect(() => {
 
         const changeWidth = () => {
