@@ -18,7 +18,7 @@ export const NavResponsive = styled.nav`
         height: 100vh;
         width: 100%;
         background-color: ${({ theme }) => (theme === "light" ? colors.colorWhite : '#2F2E41')};
-        transform: ${({ navOpen }) => navOpen ? 'translateX(0)' : 'translateX(-100%)'};
+        transform: ${({ navBar }) => navBar ? 'translateX(0)' : 'translateX(-100%)'};
         transition: transform 0.9s ease-in-out;
         z-index: 1;
         ${StyleLink}{

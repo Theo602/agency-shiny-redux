@@ -4,7 +4,7 @@ import colors from '../../utils/style/color';
 
 export const StyledBurger = styled.button`
   display: none;
-  position: ${({ navOpen }) => navOpen ? 'fixed' : 'absolute'};
+  position: ${({ navBar }) => navBar ? 'fixed' : 'absolute'};
   top: 5%;
   right: 5%;
   flex-direction: column;
@@ -35,16 +35,16 @@ export const StyledBurger = styled.button`
     background-color: ${({ theme }) => (theme === "light" ? colors.colorBlack : colors.colorWhite)};
 
     :first-child {
-        transform: ${({ navOpen }) => navOpen ? 'rotate(45deg)' : 'rotate(0)'};
+        transform: ${({ navBar }) => navBar ? 'rotate(45deg)' : 'rotate(0)'};
       }
   
       :nth-child(2) {
-        opacity: ${({ navOpen }) => navOpen ? '0' : '1'};
-        transform: ${({ navOpen }) => navOpen ? 'translateX(20px)' : 'translateX(0)'};
+        opacity: ${({ navBar }) => navBar ? '0' : '1'};
+        transform: ${({ navBar }) => navBar ? 'translateX(20px)' : 'translateX(0)'};
       }
   
       :nth-child(3) {
-        transform: ${({ navOpen }) => navOpen ? 'rotate(-45deg)' : 'rotate(0)'};
+        transform: ${({ navBar }) => navBar ? 'rotate(-45deg)' : 'rotate(0)'};
       }
   }
 `;

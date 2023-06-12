@@ -3,6 +3,7 @@ import { themeReducer } from "../features/theme"
 import freelancesReducer from "../features/freelances";
 import surveyReducer from "../features/survey";
 import profileReducer from "../features/profile";
+import { navbarReducer } from "../features/navBar";
 
 
 // Pour connecter les Redux Devtools on utilise une fonction disponible sur l'objet window
@@ -12,6 +13,7 @@ const reduxDevtools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVT
 // on utilise combineReducer pour faire fonctionner plusieurs reducers ensemble
 const reducer = combineReducers({
     theme: themeReducer,
+    navBar: navbarReducer,
     freelances: freelancesReducer,
     survey: surveyReducer,
     profile: profileReducer

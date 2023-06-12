@@ -1,6 +1,12 @@
 // Fonction qui récupere le thème de l'application
 export const selectTheme = (state) => state.theme;
 
+// Fonction qui récupere l'état de la navbar
+export const selectNavBar = (state) => state.navBar.navState;
+
+// Fonction qui récupere l'état de la navbar
+export const selectWidth = (state) => state.navBar.width;
+
 // Fonction qui récupere les données des freelances
 export const selectFreelances = (state) => state.freelances;
 

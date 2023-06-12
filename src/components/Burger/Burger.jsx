@@ -1,14 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyledBurger } from './BurgerStyle';
-import { selectTheme } from '../../utils/selectors';
+import { selectNavBar, selectTheme } from '../../utils/selectors';
+import { toogleNavBar } from '../../features/navBar';
 
-const Burger = ({ navOpen, setNavOpen}) => {
+const Burger = () => {
 
   const theme = useSelector(selectTheme);
+  const navBar = useSelector(selectNavBar);
+  const dispatch = useDispatch();
 
   return (
     
-    <StyledBurger theme={theme} navOpen={navOpen} onClick={() => setNavOpen(!navOpen)}>
+    <StyledBurger theme={theme} navBar={navBar} onClick={() => dispatch(toogleNavBar())}>
       <div />
       <div />
       <div />

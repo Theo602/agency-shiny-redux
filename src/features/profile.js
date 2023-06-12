@@ -94,7 +94,7 @@ export default function profileReducer(state = initialState, action) {
 
                 if (draft[payload.freelanceId].status === 'pending' || draft[payload.freelanceId].status === 'updating') {
                     draft[payload.freelanceId].status = 'rejected';
-                    draft[payload.freelanceId].error = payload.payload;
+                    draft[payload.freelanceId].error = payload.error;
                     draft[payload.freelanceId].data = null;
                 }
                 return;

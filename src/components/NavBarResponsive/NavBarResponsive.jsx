@@ -1,42 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { StyleLink } from '../../utils/style/BtnLink';
 import { NavResponsive } from './NavBarResponsiveStyle';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../../utils/selectors';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { selectNavBar, selectTheme } from '../../utils/selectors';
+import { navBarInit, resetNavBar } from '../../features/navBar';
 
-function NavBarResponsive({ navOpen, setNavOpen }){
+function NavBarResponsive(){
 
     const theme = useSelector(selectTheme);
-    const [ checkWidth, setCheckWidth] = useState(window.innerWidth)
-    
+    const navBar = useSelector(selectNavBar);
+    const checkWidth = useSelector(selectNavBar);
+
+    const store = useStore();
+    const dispatch = useDispatch();
+     
     useEffect(() => {
-
-        const changeWidth = () => {
-            setCheckWidth(window.innerWidth);
-
-            if(window.innerWidth > 992) {
-                setNavOpen(false);
-            }
-
-        }
-
-        window.addEventListener('resize', changeWidth);
-
-        return () => {
-            window.removeEventListener('resize', changeWidth);
-        }
-
-    }, [setNavOpen]);
+        resetNavBar(store);
+    }, [store]);
 
     const outClick = () => {
-        setNavOpen(false);
+        dispatch(navBarInit(false));
     }
 
     return(
         <>
            { (checkWidth <= 992) && (
                 
-                <NavResponsive theme={theme} navOpen={navOpen}>
+                <NavResponsive theme={theme} navBar={navBar}>
                     <StyleLink $theme={theme} onClick={() => outClick()} to="/">Accueil</StyleLink>
                     <StyleLink $theme={theme} onClick={() => outClick()} to="/freelances">Profils</StyleLink>
                     <StyleLink $theme={theme} onClick={() => outClick()} to="/survey/1" >Faire le test</StyleLink>
