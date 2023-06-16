@@ -1,7 +1,8 @@
-import { produce } from "immer";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 import { selectWidth } from "../utils/selectors";
 
-// Le state initial de la feature freelances
+
+// Le state initial de la feature navBar
 
 const initialState = {
     navState: false,
@@ -9,25 +10,12 @@ const initialState = {
 }
 
 
-// Les noms des actions
-
-export const NAVBAR_INIT = "navbarInit";
-export const NAVBAR_TOOGLE = "toogleNavbar";
-export const NAVBAR_WIDTH = "navbarWidth";
-
 // actions creators
 
-export const toogleNavBar = () => ({ type: NAVBAR_TOOGLE })
+export const toogleNavBar = createAction("toogleNavbar");
+export const navBarInit = createAction("navbarInit");
+export const navbarWidth = createAction("navbarWidth");
 
-export const navBarInit = (navbar) => ({
-    type: NAVBAR_INIT,
-    payload: navbar
-})
-
-export const navbarWidth = (width) => ({
-    type: NAVBAR_WIDTH,
-    payload: width
-})
 
 // Fonction qui permet de réinitialiser la barre de navigation
 export const resetNavBar = (store) => {
@@ -54,31 +42,19 @@ export const resetNavBar = (store) => {
 
 
 // Le reducer
-// on utilise une valeur par défaut pour donner le state initial
-export const navbarReducer = (state = initialState, action) => {
 
-    return produce(state, (draft) => {
-
-        switch (action.type) {
-
-            case NAVBAR_INIT: {
-                draft.navState = action.payload;
-                return;
-            }
-
-            case NAVBAR_TOOGLE: {
-                draft.navState = !draft.navState;
-                return;
-            }
-
-            case NAVBAR_WIDTH: {
-                draft.width = action.payload;
-                return;
-            }
-
-            default:
-                return;
-        }
-
-    });
-}
+export default createReducer(initialState, (builder) =>
+    builder
+        .addCase(navBarInit, (draft, action) => {
+            draft.navState = action.payload;
+            return;
+        })
+        .addCase(toogleNavBar, (draft) => {
+            draft.navState = !draft.navState;
+            return;
+        })
+        .addCase(navbarWidth, (draft, action) => {
+            draft.width = action.payload;
+            return;
+        })
+)
