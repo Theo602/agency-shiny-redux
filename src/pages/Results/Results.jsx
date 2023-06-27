@@ -1,13 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SurveyContext } from "../../utils/context";
-import { useFetch } from "../../utils/hooks";
 import EmptyList from "../../components/EmptyList/EmptyList";
 import { Loader } from "../../utils/style/Loader";
 import { PageLink } from "../../utils/style/BtnLink";
 import { ContainerResults, ContentResults, ContentInformation, ContentDescription, 
          TitleResults, SubTitleResults, TittleInformation, TextInformation, FetchError } from './ResultsStyle';
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../utils/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectResults, selectTheme } from "../../utils/selectors";
+import { fetchOrUpdateResults } from "../../features/results";
 
          
 export function formatQueryParams(answers){
@@ -37,10 +37,20 @@ function Results(){
     const theme = useSelector(selectTheme);
     const { answers } = useContext(SurveyContext);
     const fetchParams = formatQueryParams(answers);
-    const { data, isLoading, error } = useFetch(`http://localhost:8000/results?${fetchParams}`);
-    const { resultsData } = data;
+    
+    const dispatch = useDispatch();
 
-    if(error) {
+    // on utilise useEffect pour lancer la requête au chargement du composant
+    useEffect(() => {
+        dispatch(fetchOrUpdateResults(fetchParams));
+    }, [dispatch, fetchParams]);
+
+    const results = useSelector(selectResults);
+ 
+    const resultsData = results.data?.resultsData;   
+    const isLoading = results.status === 'void' || results.status === 'pending' || results.status === 'updating';
+
+    if(results.status === 'rejected') {
         return <FetchError>Oups il ya un problème</FetchError>
     }
 

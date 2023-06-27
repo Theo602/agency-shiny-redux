@@ -4,7 +4,7 @@ import { SurveyContext } from "../../utils/context";
 import { Loader } from "../../utils/style/Loader";
 import { ContainerQuestion, TittleQuestion, ContentQuestion, 
          ContainerArrow, ContentError, ContainerReply, ReplyBox } from './SurveyStyle'
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectSurvey, selectTheme } from "../../utils/selectors";
 import { fetchOrUpdateSurvey } from "../../features/survey";
 
@@ -17,24 +17,19 @@ function Survey(){
 
     const { answers, saveAnswers } = useContext(SurveyContext);
 
-
-    // on récupère le store grâce au hook useStore()
-    const store = useStore();
+    const dispatch = useDispatch();
 
     // on utilise useEffect pour lancer la requête au chargement du composant
     useEffect(() => {
-        // on exécute notre action asynchrone avec le store en paramètre
-        fetchOrUpdateSurvey(store);
-    }, [store]);
+        dispatch(fetchOrUpdateSurvey);
+    }, [dispatch]);
 
+    const theme = useSelector(selectTheme);
     const survey = useSelector(selectSurvey);
 
     const surveyData = survey.data?.surveyData;   
     const isLoading = survey.status === 'void' || survey.status === 'pending';
     
-
-    const theme = useSelector(selectTheme);
-
     if(survey.status === 'rejected') {
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }

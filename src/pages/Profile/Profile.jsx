@@ -3,7 +3,7 @@ import { Loader } from "../../utils/style/Loader";
 import { FetchError, ContainerProfile, FigureProfile, ImgProfile, DetailProfile,
          ContainerTitle, TitleProfile, LocationProfile, JobTitle, ContainerSkills,
          SkillProfile, Availability, PriceProfile } from './ProfileStyle';
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectProfile, selectTheme } from "../../utils/selectors";
 import { useEffect } from "react";
 import { fetchOrUpdateProfile } from "../../features/profile";
@@ -11,13 +11,13 @@ import { fetchOrUpdateProfile } from "../../features/profile";
 
 function Profile(){
 
-    const store = useStore();
+    const dispatch = useDispatch();
     const { id: freelanceId } = useParams();
     const theme = useSelector(selectTheme);
        
     useEffect(() => {
-        fetchOrUpdateProfile(freelanceId, store);
-    }, [freelanceId, store]);
+        dispatch(fetchOrUpdateProfile(freelanceId));
+    }, [freelanceId, dispatch]);
     
     const profile = useSelector(selectProfile(freelanceId))
     const freelanceData = profile.data?.freelanceData ?? {};   

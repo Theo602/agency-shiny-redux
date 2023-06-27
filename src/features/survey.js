@@ -18,28 +18,26 @@ export const surveyRejected = createAction('survey/rejected');
 
 
 // Call Api survey
-// cette fonction est une action asynchrone
-// elle attend le store redux en paramètre
 
-export async function fetchOrUpdateSurvey(store) {
+export async function fetchOrUpdateSurvey(dispatch, getState) {
 
-    const status = selectSurvey(store.getState()).status;
+    const status = selectSurvey(getState()).status;
 
     if (status === 'pending' || status === 'updating') {
         return;
     }
 
-    store.dispatch(surveyFetching());
+    dispatch(surveyFetching());
 
     try {
 
         const response = await fetch('http://localhost:8000/survey');
         const data = await response.json();
-        store.dispatch(surveyResolved(data));
+        dispatch(surveyResolved(data));
 
     } catch (error) {
 
-        store.dispatch(surveyRejected(error));
+        dispatch(surveyRejected(error));
     }
 }
 
@@ -47,7 +45,7 @@ export async function fetchOrUpdateSurvey(store) {
 
 export default createReducer(initialState, (builder) =>
     builder
-        .addCase(surveyFetching, (draft, action) => {
+        .addCase(surveyFetching, (draft) => {
             if (draft.status === 'void') {
                 draft.status = 'pending';
                 return;

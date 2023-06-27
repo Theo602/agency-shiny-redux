@@ -4,7 +4,7 @@ import freelancesReducer from "../features/freelances";
 import surveyReducer from "../features/survey";
 import profileReducer from "../features/profile";
 import navbarReducer from "../features/navBar";
-
+import resultsReducer from "../features/results";
 
 export default configureStore({
     reducer: {
@@ -12,6 +12,7 @@ export default configureStore({
         navBar: navbarReducer,
         freelances: freelancesReducer,
         survey: surveyReducer,
-        profile: profileReducer
+        profile: profileReducer,
+        results: resultsReducer
     }
 })

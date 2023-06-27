@@ -1,7 +1,7 @@
 import Cart from '../../components/Cart/Cart';
 import { Loader } from "../../utils/style/Loader";
 import { ContentError, ContainerFreelance, TitleFreelance, TextFreelance, CardsContainer, LinkCart} from './FreelancesStyle'
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectFreelances, selectTheme } from "../../utils/selectors";
 import { useEffect } from "react";
 import { fetchOrUpdateFreelances } from "../../features/freelances";
@@ -9,14 +9,12 @@ import { fetchOrUpdateFreelances } from "../../features/freelances";
 
 function Freelances(){
     
-    // on récupère le store grâce au hook useStore()
-    const store = useStore();
+    const dispatch = useDispatch();
 
     // on utilise useEffect pour lancer la requête au chargement du composant
     useEffect(() => {
-        // on exécute notre action asynchrone avec le store en paramètre
-        fetchOrUpdateFreelances(store);
-    }, [store]);
+        dispatch(fetchOrUpdateFreelances)
+    }, [dispatch]);
 
     const theme = useSelector(selectTheme);
     const freelances = useSelector(selectFreelances);

@@ -17,3 +17,6 @@ export const selectProfile = (freelanceId) => (state) => state.profile[freelance
 
 // Fonction qui récupere les données des questions
 export const selectSurvey = (state) => state.survey;
+
+// Fonction qui récupere les données des resultats
+export const selectResults = (state) => state.results;

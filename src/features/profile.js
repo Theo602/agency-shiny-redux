@@ -32,30 +32,30 @@ const profileRejected = createAction(
 
 
 // Call Api freelance
-// cette fonction est une action asynchrone
-// elle attend le store redux en paramètre
 
-export async function fetchOrUpdateProfile(freelanceId, store) {
+export function fetchOrUpdateProfile(freelanceId) {
 
-    const freelanceById = selectProfile(freelanceId);
-    const status = freelanceById(store.getState()).status;
+    return async (dispatch, getState) => {
+        const freelanceById = selectProfile(freelanceId);
+        const status = freelanceById(getState()).status;
 
-    if (status === 'pending' || status === 'updating') {
-        return;
-    }
+        if (status === 'pending' || status === 'updating') {
+            return;
+        }
 
-    store.dispatch(profileFetching(freelanceId));
+        dispatch(profileFetching(freelanceId));
 
-    try {
+        try {
 
-        const response = await fetch(`http://localhost:8000/freelance?id=${freelanceId}`);
-        const data = await response.json();
-        store.dispatch(profileResolved(freelanceId, data));
+            const response = await fetch(`http://localhost:8000/freelance?id=${freelanceId}`);
+            const data = await response.json();
+            dispatch(profileResolved(freelanceId, data));
 
-    } catch (error) {
+        } catch (error) {
 
-        store.dispatch(profileRejected(freelanceId, error));
-    }
+            dispatch(profileRejected(freelanceId, error));
+        }
+    };
 }
 
 // Fonction si le freelance est undefined
