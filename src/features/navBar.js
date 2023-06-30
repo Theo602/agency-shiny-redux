@@ -1,4 +1,4 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { selectWidth } from "../utils/selectors";
 
 
@@ -7,28 +7,21 @@ import { selectWidth } from "../utils/selectors";
 const initialState = {
     navState: false,
     width: window.innerWidth,
-}
-
-
-// actions creators
-
-export const toogleNavBar = createAction("toogleNavbar");
-export const navBarInit = createAction("navbarInit");
-export const navbarWidth = createAction("navbarWidth");
+};
 
 
 // Fonction qui permet de réinitialiser la barre de navigation
-export const resetNavBar = (store) => {
+export const resetNavBar = (dispatch, getState) => {
 
     const changeWidth = () => {
 
         const windowWidth = window.innerWidth;
-        store.dispatch(navbarWidth(windowWidth));
+        dispatch(actions.navbarWidth(windowWidth));
 
-        const width = selectWidth(store.getState())
+        const width = selectWidth(getState());
 
         if (width > 992) {
-            store.dispatch(navBarInit(false))
+            dispatch(actions.init(false));
         }
     }
 
@@ -41,20 +34,26 @@ export const resetNavBar = (store) => {
 }
 
 
-// Le reducer
-
-export default createReducer(initialState, (builder) =>
-    builder
-        .addCase(navBarInit, (draft, action) => {
-            draft.navState = action.payload;
-            return;
-        })
-        .addCase(toogleNavBar, (draft) => {
+const navBarSlice = createSlice({
+    name: 'navBar',
+    initialState,
+    reducers: {
+        toogle: (draft) => {
             draft.navState = !draft.navState;
             return;
-        })
-        .addCase(navbarWidth, (draft, action) => {
+        },
+        init: (draft, action) => {
+            draft.navState = action.payload;
+            return;
+        },
+        navbarWidth: (draft, action) => {
             draft.width = action.payload;
             return;
-        })
-)
+        },
+    },
+
+});
+
+const { actions, reducer } = navBarSlice;
+export const { init, toogle, navbarWidth } = actions;
+export default reducer;

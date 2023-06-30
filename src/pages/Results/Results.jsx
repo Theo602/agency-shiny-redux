@@ -1,12 +1,11 @@
-import { useContext, useEffect } from "react";
-import { SurveyContext } from "../../utils/context";
+import { useEffect } from "react";
 import EmptyList from "../../components/EmptyList/EmptyList";
 import { Loader } from "../../utils/style/Loader";
 import { PageLink } from "../../utils/style/BtnLink";
 import { ContainerResults, ContentResults, ContentInformation, ContentDescription, 
          TitleResults, SubTitleResults, TittleInformation, TextInformation, FetchError } from './ResultsStyle';
 import { useDispatch, useSelector } from "react-redux";
-import { selectResults, selectTheme } from "../../utils/selectors";
+import { selectAnswers, selectResults, selectTheme } from "../../utils/selectors";
 import { fetchOrUpdateResults } from "../../features/results";
 
          
@@ -35,7 +34,7 @@ export function formatJobList(title, listLength, index){
 function Results(){
     
     const theme = useSelector(selectTheme);
-    const { answers } = useContext(SurveyContext);
+    const answers = useSelector(selectAnswers);
     const fetchParams = formatQueryParams(answers);
     
     const dispatch = useDispatch();

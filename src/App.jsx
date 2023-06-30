@@ -7,14 +7,12 @@ import Profile from './pages/Profile/Profile';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Error from './components/Error/Error';
-import { SurveyProvider } from './utils/context';
 import GlobalStyle from './utils/style/GlobalStyle';
 
 function App() {
 
     return (
             <Router>
-                <SurveyProvider>
                   <GlobalStyle />
                   <Header />
                   <Routes>
@@ -26,7 +24,6 @@ function App() {
                       <Route path='*' element={<Error />} />
                   </Routes>
                   <Footer />
-                </SurveyProvider>
             </Router>
     )
   }

@@ -1,20 +1,14 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { selectSurvey } from "../utils/selectors";
 
-// Le state initial de la feature survey
+
+// Le state initial de la feature freelances
 
 const initialState = {
     status: 'void',
     data: null,
     error: null,
-}
-
-
-// actions creators
-
-export const surveyFetching = createAction('survey/fetching');
-export const surveyResolved = createAction('survey/resolved');
-export const surveyRejected = createAction('survey/rejected');
+};
 
 
 // Call Api survey
@@ -27,25 +21,25 @@ export async function fetchOrUpdateSurvey(dispatch, getState) {
         return;
     }
 
-    dispatch(surveyFetching());
+    dispatch(actions.fetching());
 
     try {
 
         const response = await fetch('http://localhost:8000/survey');
         const data = await response.json();
-        dispatch(surveyResolved(data));
+        dispatch(actions.resolved(data));
 
     } catch (error) {
-
-        dispatch(surveyRejected(error));
+        dispatch(actions.rejected(error));
     }
 }
 
-// Le reducer
 
-export default createReducer(initialState, (builder) =>
-    builder
-        .addCase(surveyFetching, (draft) => {
+const { actions, reducer } = createSlice({
+    name: 'survey',
+    initialState,
+    reducers: {
+        fetching: (draft) => {
             if (draft.status === 'void') {
                 draft.status = 'pending';
                 return;
@@ -63,23 +57,25 @@ export default createReducer(initialState, (builder) =>
             }
 
             return;
-        })
-        .addCase(surveyResolved, (draft, action) => {
+        },
+        resolved: (draft, action) => {
             if (draft.status === 'pending' || draft.status === 'updating') {
                 draft.data = action.payload;
                 draft.status = 'resolved';
                 return;
             }
-
             return;
-        })
-        .addCase(surveyRejected, (draft, action) => {
+        },
+        rejected: (draft, action) => {
             if (draft.status === 'pending' || draft.status === 'updating') {
                 draft.status = 'rejected';
                 draft.error = action.payload;
                 draft.data = null;
             }
-
             return;
-        })
-)
+        },
+    },
+});
+
+export default reducer;
+

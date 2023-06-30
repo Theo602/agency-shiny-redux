@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
 import { StyleLink } from '../../utils/style/BtnLink';
 import { NavResponsive } from './NavBarResponsiveStyle';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { selectNavBar, selectTheme } from '../../utils/selectors';
-import { navBarInit, resetNavBar } from '../../features/navBar';
+import { resetNavBar } from '../../features/navBar';
+import * as navBarAction from '../../features/navBar';
 
 function NavBarResponsive(){
 
     const theme = useSelector(selectTheme);
     const navBar = useSelector(selectNavBar);
     const checkWidth = useSelector(selectNavBar);
-
-    const store = useStore();
+ 
     const dispatch = useDispatch();
      
     useEffect(() => {
-        resetNavBar(store);
-    }, [store]);
+        dispatch(resetNavBar);
+    }, [dispatch]);
 
     const outClick = () => {
-        dispatch(navBarInit(false));
+        dispatch(navBarAction.init(false));
     }
 
     return(

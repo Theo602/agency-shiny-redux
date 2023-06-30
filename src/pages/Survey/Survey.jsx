@@ -1,22 +1,21 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { SurveyContext } from "../../utils/context";
 import { Loader } from "../../utils/style/Loader";
 import { ContainerQuestion, TittleQuestion, ContentQuestion, 
          ContainerArrow, ContentError, ContainerReply, ReplyBox } from './SurveyStyle'
 import { useDispatch, useSelector } from "react-redux";
-import { selectSurvey, selectTheme } from "../../utils/selectors";
+import { selectAnswers, selectSurvey, selectTheme } from "../../utils/selectors";
 import { fetchOrUpdateSurvey } from "../../features/survey";
+import { setAnswer } from "../../features/answers";
+
 
 function Survey(){
 
-    const { questionNumber } = useParams()
+    const { questionNumber } = useParams();
     const question = parseInt(questionNumber);
     const questionPrevious = question === 1 ? 1 : question - 1;
     const questionNext = question + 1;
-
-    const { answers, saveAnswers } = useContext(SurveyContext);
-
+  
     const dispatch = useDispatch();
 
     // on utilise useEffect pour lancer la requête au chargement du composant
@@ -26,7 +25,7 @@ function Survey(){
 
     const theme = useSelector(selectTheme);
     const survey = useSelector(selectSurvey);
-
+    const answers = useSelector(selectAnswers);
     const surveyData = survey.data?.surveyData;   
     const isLoading = survey.status === 'void' || survey.status === 'pending';
     
@@ -34,11 +33,11 @@ function Survey(){
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }
     
-    function saveReply(answers){
-        
-        saveAnswers({ [questionNumber]: answers })
+    function saveReply(answer){
+        dispatch(setAnswer({ questionNumber, answer }));
+       //dispatch(setAnswer({ [questionNumber]: answer }));
     }
-    
+
     return(
 
         <ContainerQuestion>

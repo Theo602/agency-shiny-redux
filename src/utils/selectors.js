@@ -20,3 +20,6 @@ export const selectSurvey = (state) => state.survey;
 
 // Fonction qui récupere les données des resultats
 export const selectResults = (state) => state.results;
+
+// Fonction qui récupere les données des réponses  
+export const selectAnswers = (state) => state.answers;
