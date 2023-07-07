@@ -1,46 +1,38 @@
-import Cart from './Cart'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { ThemeProvider } from '../../utils/context'
+import Cart from './Cart';
+import { render } from '../../utils/test';
+import { screen } from '@testing-library/react';
 
 describe('Cart', () => {
 
-    test('Should render without crash', async () => {
-        render(
-            <ThemeProvider>
-                <Cart />
-            </ThemeProvider>
-        )
-    })
+    it('Should render without crash', async () => {
+        render(<Cart />)
+    });
 
-    test('Passing props picture', async () => {
-        
+    it('Passing props picture', async () => {
+
         render(
-            <ThemeProvider>
-                <Cart                         
-                    label="cart label"
-                    title="test composant"
-                    picture="/test.png" 
-                />
-            </ThemeProvider>
+            <Cart
+                label="cart label"
+                title="test composant"
+                picture="/test.png"
+            />
         )
         const cardImage = screen.getByRole('img');
         expect(cardImage.src).toBe('http://localhost/test.png');
-    })
+    });
 
-    test('Passing props title', async () => {
-        
+    it('Passing props title', async () => {
+
         render(
-            <ThemeProvider>
-                <Cart 
-                    label="cart label"
-                    title="test composant"
-                    picture="/test.png" 
-                />
-            </ThemeProvider>
+            <Cart
+                label="cart label"
+                title="test composant"
+                picture="/test.png"
+            />
         )
         const cardTitle = screen.getByTestId('title-element');
         expect(cardTitle.textContent).toBe('test composant');
-        
-    })
 
-})
+    });
+
+});

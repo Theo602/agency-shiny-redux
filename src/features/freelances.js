@@ -67,13 +67,14 @@ const { actions, reducer } = createSlice({
         rejected: (draft, action) => {
 
             if (draft.status === 'pending' || draft.status === 'updating') {
-                draft.status = 'rejected';
                 draft.error = action.payload;
                 draft.data = null;
+                draft.status = 'rejected';
             }
             return;
         },
     },
 });
 
+export const { fetching, resolved, rejected } = actions;
 export default reducer;

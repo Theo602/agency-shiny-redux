@@ -36,7 +36,7 @@ function Results(){
     const theme = useSelector(selectTheme);
     const answers = useSelector(selectAnswers);
     const fetchParams = formatQueryParams(answers);
-    
+
     const dispatch = useDispatch();
 
     // on utilise useEffect pour lancer la requête au chargement du composant

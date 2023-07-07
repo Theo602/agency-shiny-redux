@@ -6,11 +6,11 @@ import Freelances from './Freelances';
 import { render } from "../../utils/test";
 
 const server = setupServer(
-    
+
     //On précise ici l'url qu'il faudra "intercepter"
 
     rest.get('http://localhost:8000/freelances', (req, res, ctx) => {
-       
+
         // Là on va pouvoir passer les datas mockées dans ce qui est retourné en json
         return res(ctx.json({ freelancersList: freelancesMockedData }));
     })
@@ -51,15 +51,15 @@ const freelancesMockedData = [
         job: 'Magicien webdesigner',
         picture: ''
     },
-]
+];
 
 it('Should display freelancers names after loader is removed', async () => {
     render(<Freelances />)
-     
+
     await waitForElementToBeRemoved(() => screen.queryByTestId('loader'))
-          expect(screen.getByText('Aragorn')).toBeInTheDocument()
-          expect(screen.getByText('Gandalf')).toBeInTheDocument()
-          expect(screen.getByText('Arwen')).toBeInTheDocument()
-          expect(screen.getByText('Legolas')).toBeInTheDocument()
-          expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
-})
+    expect(screen.getByText('Aragorn')).toBeInTheDocument()
+    expect(screen.getByText('Gandalf')).toBeInTheDocument()
+    expect(screen.getByText('Arwen')).toBeInTheDocument()
+    expect(screen.getByText('Legolas')).toBeInTheDocument()
+    expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
+});

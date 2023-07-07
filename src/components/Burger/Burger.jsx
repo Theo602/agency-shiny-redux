@@ -11,7 +11,7 @@ const Burger = () => {
    
   return (
     
-    <StyledBurger theme={theme} navBar={navBar} onClick={() => dispatch(navBarAction.toogle())}>
+    <StyledBurger theme={theme} navBar={navBar} onClick={() => dispatch(navBarAction.toggle())}>
       <div />
       <div />
       <div />

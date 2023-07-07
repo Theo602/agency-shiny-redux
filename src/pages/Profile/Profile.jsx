@@ -22,7 +22,7 @@ function Profile(){
     const profile = useSelector(selectProfile(freelanceId))
     const freelanceData = profile.data?.freelanceData ?? {};   
     const { picture, name, location, tjm, job, skills, available, id } = freelanceData
-
+    console.log('st2', profile.status)
     const isLoading = profile.status === 'void' || profile.status === 'pending';
  
     if(profile.status === 'rejected') {

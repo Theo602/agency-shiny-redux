@@ -1,7 +1,7 @@
-// Le state initial de la feature answers
-
 import { createSlice } from "@reduxjs/toolkit";
 
+
+// Le state initial de la feature answers
 const initialState = {
     //answer: {}
 };

@@ -38,7 +38,7 @@ const navBarSlice = createSlice({
     name: 'navBar',
     initialState,
     reducers: {
-        toogle: (draft) => {
+        toggle: (draft) => {
             draft.navState = !draft.navState;
             return;
         },
@@ -55,5 +55,5 @@ const navBarSlice = createSlice({
 });
 
 const { actions, reducer } = navBarSlice;
-export const { init, toogle, navbarWidth } = actions;
+export const { init, toggle, navbarWidth } = actions;
 export default reducer;

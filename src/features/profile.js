@@ -36,7 +36,8 @@ export function fetchOrUpdateProfile(freelanceId) {
 
 // Fonction si le freelance est undefined
 
-function setVoidIfUndefined(draft, freelanceId) {
+export function setVoidIfUndefined(draft, freelanceId) {
+
     if (draft[freelanceId] === undefined) {
         draft[freelanceId] = { status: 'void' }
     }
@@ -100,6 +101,7 @@ const { actions, reducer } = createSlice({
                 if (draft[action.payload.freelanceId].status === 'pending' || draft[action.payload.freelanceId].status === 'updating') {
                     draft[action.payload.freelanceId].error = action.payload.error;
                     draft[action.payload.freelanceId].data = null;
+                    draft[action.payload.freelanceId].status = 'rejected';
                 }
                 return;
             },
@@ -108,4 +110,5 @@ const { actions, reducer } = createSlice({
 
 });
 
+export const { fetching, resolved, rejected } = actions;
 export default reducer;
