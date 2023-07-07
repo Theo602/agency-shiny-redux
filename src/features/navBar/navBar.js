@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { selectWidth } from "../utils/selectors";
+import { selectWidth } from "../../utils/selectors";
 
 
 // Le state initial de la feature navBar

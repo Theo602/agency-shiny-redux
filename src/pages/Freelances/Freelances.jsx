@@ -4,7 +4,7 @@ import { ContentError, ContainerFreelance, TitleFreelance, TextFreelance, CardsC
 import { useDispatch, useSelector } from "react-redux";
 import { selectFreelances, selectTheme } from "../../utils/selectors";
 import { useEffect } from "react";
-import { fetchOrUpdateFreelances } from "../../features/freelances";
+import { fetchOrUpdateFreelances } from "../../features/freelances/freelances";
 
 
 function Freelances(){

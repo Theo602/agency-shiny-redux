@@ -5,8 +5,8 @@ import { ContainerQuestion, TittleQuestion, ContentQuestion,
          ContainerArrow, ContentError, ContainerReply, ReplyBox } from './SurveyStyle'
 import { useDispatch, useSelector } from "react-redux";
 import { selectAnswers, selectSurvey, selectTheme } from "../../utils/selectors";
-import { fetchOrUpdateSurvey } from "../../features/survey";
-import { setAnswer } from "../../features/answers";
+import { fetchOrUpdateSurvey } from "../../features/survey/survey";
+import { setAnswer } from "../../features/answers/answers";
 
 
 function Survey(){

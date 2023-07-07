@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { selectFreelances } from "../utils/selectors";
+import { selectFreelances } from "../../utils/selectors";
 
 
 // Le state initial de la feature freelances

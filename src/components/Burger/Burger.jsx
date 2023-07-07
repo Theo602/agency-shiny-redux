@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { StyledBurger } from './BurgerStyle';
 import { selectNavBar, selectTheme } from '../../utils/selectors';
-import * as navBarAction from '../../features/navBar';
+import * as navBarAction from '../../features/navBar/navBar';
 
 const Burger = () => {
 

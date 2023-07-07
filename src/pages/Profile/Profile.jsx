@@ -6,7 +6,7 @@ import { FetchError, ContainerProfile, FigureProfile, ImgProfile, DetailProfile,
 import { useDispatch, useSelector } from "react-redux";
 import { selectProfile, selectTheme } from "../../utils/selectors";
 import { useEffect } from "react";
-import { fetchOrUpdateProfile } from "../../features/profile";
+import { fetchOrUpdateProfile } from "../../features/profile/profile";
 
 
 function Profile(){

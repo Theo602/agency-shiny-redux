@@ -3,8 +3,8 @@ import { StyleLink } from '../../utils/style/BtnLink';
 import { NavResponsive } from './NavBarResponsiveStyle';
 import { useDispatch, useSelector} from 'react-redux';
 import { selectNavBar, selectTheme } from '../../utils/selectors';
-import { resetNavBar } from '../../features/navBar';
-import * as navBarAction from '../../features/navBar';
+import { resetNavBar } from '../../features/navBar/navBar';
+import * as navBarAction from '../../features/navBar/navBar';
 
 function NavBarResponsive(){
 

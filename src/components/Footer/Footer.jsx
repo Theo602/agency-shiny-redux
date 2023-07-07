@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmailInput from '../EmailInput/EmailImput';
 import { FooterContainer, NightModeButton } from './FooterStyle';
 import { selectTheme } from '../../utils/selectors';
-import * as themeActions from '../../features/theme';
+import * as themeActions from '../../features/theme/theme';
 
 function Footer(){
 

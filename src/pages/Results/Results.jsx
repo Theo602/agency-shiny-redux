@@ -6,7 +6,7 @@ import { ContainerResults, ContentResults, ContentInformation, ContentDescriptio
          TitleResults, SubTitleResults, TittleInformation, TextInformation, FetchError } from './ResultsStyle';
 import { useDispatch, useSelector } from "react-redux";
 import { selectAnswers, selectResults, selectTheme } from "../../utils/selectors";
-import { fetchOrUpdateResults } from "../../features/results";
+import { fetchOrUpdateResults } from "../../features/results/results";
 
          
 export function formatQueryParams(answers){

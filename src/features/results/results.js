@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { selectResults } from "../utils/selectors";
+import { selectResults } from "../../utils/selectors";
 
 // Le state initial de la feature results
 

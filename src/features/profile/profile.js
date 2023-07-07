@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { selectProfile } from "../utils/selectors";
+import { selectProfile } from "../../utils/selectors";
 
 
 // Le state initial de la feature profile
