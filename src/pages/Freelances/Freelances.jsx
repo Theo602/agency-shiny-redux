@@ -1,28 +1,24 @@
 import Cart from '../../components/Cart/Cart';
 import { Loader } from "../../utils/style/Loader";
 import { ContentError, ContainerFreelance, TitleFreelance, TextFreelance, CardsContainer, LinkCart} from './FreelancesStyle'
-import { useDispatch, useSelector } from "react-redux";
-import { selectFreelances, selectTheme } from "../../utils/selectors";
-import { useEffect } from "react";
-import { fetchOrUpdateFreelances } from "../../features/freelances/freelances";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../../utils/selectors";
+import { useQuery } from 'react-query';
 
 
 function Freelances(){
     
-    const dispatch = useDispatch();
+    const theme = useSelector(selectTheme); 
 
-    // on utilise useEffect pour lancer la requête au chargement du composant
-    useEffect(() => {
-        dispatch(fetchOrUpdateFreelances)
-    }, [dispatch]);
+    const { data, isLoading, error } = useQuery('freelances', async () => {
+        const response = await fetch('http://localhost:8000/freelances');
+        const data = await response.json();
+        return data;
+    })
+    
+    const freelancersList = data?.freelancersList;
 
-    const theme = useSelector(selectTheme);
-    const freelances = useSelector(selectFreelances);
-    
-    const freelancersList = freelances.data?.freelancersList;   
-    const isLoading = freelances.status === 'void' || freelances.status === 'pending';
-    
-    if(freelances.status === 'rejected') {
+    if(error) {
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }
 
@@ -43,7 +39,7 @@ function Freelances(){
                     <CardsContainer theme={theme}>
                         
                         {  
-                            freelancersList.map((profil, index ) => (
+                            freelancersList.map((profil) => (
                                 <LinkCart key={`freelance-${profil.id}`} to={`/profile/${profil.id}`}>                          
                                 <Cart 
                                     label={ profil.job }

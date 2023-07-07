@@ -1,12 +1,11 @@
-import { useEffect } from "react";
 import EmptyList from "../../components/EmptyList/EmptyList";
 import { Loader } from "../../utils/style/Loader";
 import { PageLink } from "../../utils/style/BtnLink";
 import { ContainerResults, ContentResults, ContentInformation, ContentDescription, 
          TitleResults, SubTitleResults, TittleInformation, TextInformation, FetchError } from './ResultsStyle';
-import { useDispatch, useSelector } from "react-redux";
-import { selectAnswers, selectResults, selectTheme } from "../../utils/selectors";
-import { fetchOrUpdateResults } from "../../features/results/results";
+import { useSelector } from "react-redux";
+import { selectAnswers, selectTheme } from "../../utils/selectors";
+import { useQuery } from "react-query";
 
          
 export function formatQueryParams(answers){
@@ -35,21 +34,17 @@ function Results(){
     
     const theme = useSelector(selectTheme);
     const answers = useSelector(selectAnswers);
-    const fetchParams = formatQueryParams(answers);
+    const params = formatQueryParams(answers);
 
-    const dispatch = useDispatch();
+    const { data, isLoading, error } = useQuery(['results', params], async () => {
+        const response = await fetch(`http://localhost:8000/results?${params}`);
+        const data = await response.json();
+        return data;
+    })
 
-    // on utilise useEffect pour lancer la requête au chargement du composant
-    useEffect(() => {
-        dispatch(fetchOrUpdateResults(fetchParams));
-    }, [dispatch, fetchParams]);
+    const resultsData = data?.resultsData
 
-    const results = useSelector(selectResults);
- 
-    const resultsData = results.data?.resultsData;   
-    const isLoading = results.status === 'void' || results.status === 'pending' || results.status === 'updating';
-
-    if(results.status === 'rejected') {
+    if(error) {
         return <FetchError>Oups il ya un problème</FetchError>
     }
 
@@ -67,7 +62,7 @@ function Results(){
                     <>
                     
                         {
-                            (resultsData.length !== 0) ?  
+                            (data.resultsData.length !== 0) ?  
  
                             (
                             

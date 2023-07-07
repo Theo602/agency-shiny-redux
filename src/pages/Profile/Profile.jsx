@@ -3,29 +3,27 @@ import { Loader } from "../../utils/style/Loader";
 import { FetchError, ContainerProfile, FigureProfile, ImgProfile, DetailProfile,
          ContainerTitle, TitleProfile, LocationProfile, JobTitle, ContainerSkills,
          SkillProfile, Availability, PriceProfile } from './ProfileStyle';
-import { useDispatch, useSelector } from "react-redux";
-import { selectProfile, selectTheme } from "../../utils/selectors";
-import { useEffect } from "react";
-import { fetchOrUpdateProfile } from "../../features/profile/profile";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../../utils/selectors";
+import { useQuery } from "react-query";
 
 
 function Profile(){
 
-    const dispatch = useDispatch();
     const { id: freelanceId } = useParams();
+    
     const theme = useSelector(selectTheme);
        
-    useEffect(() => {
-        dispatch(fetchOrUpdateProfile(freelanceId));
-    }, [freelanceId, dispatch]);
-    
-    const profile = useSelector(selectProfile(freelanceId))
-    const freelanceData = profile.data?.freelanceData ?? {};   
-    const { picture, name, location, tjm, job, skills, available, id } = freelanceData
-    console.log('st2', profile.status)
-    const isLoading = profile.status === 'void' || profile.status === 'pending';
- 
-    if(profile.status === 'rejected') {
+    const { data, isLoading, error } = useQuery(['profile', freelanceId], async () => {
+        const response = await fetch(`http://localhost:8000/freelance?id=${freelanceId}`);
+        const data = await response.json();
+        return data;
+    })
+
+    const profileData = data?.freelanceData ?? {}
+    const { picture, name, location, tjm, job, skills, available, id } = profileData;
+     
+    if(error) {
         return <FetchError>Oups il ya un problème</FetchError>
     }
 
@@ -56,7 +54,7 @@ function Profile(){
                             <JobTitle theme={theme}>{job}</JobTitle>
 
                             <ContainerSkills>
-                                {skills && freelanceData.skills.map((skill) => (
+                                {skills && skills.map((skill) => (
                                     <SkillProfile key={`skill-${skill}-${id}`} theme={theme}>
                                         {skill}
                                     </SkillProfile>

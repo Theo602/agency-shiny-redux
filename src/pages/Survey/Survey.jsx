@@ -1,12 +1,11 @@
-import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Loader } from "../../utils/style/Loader";
 import { ContainerQuestion, TittleQuestion, ContentQuestion, 
          ContainerArrow, ContentError, ContainerReply, ReplyBox } from './SurveyStyle'
 import { useDispatch, useSelector } from "react-redux";
-import { selectAnswers, selectSurvey, selectTheme } from "../../utils/selectors";
-import { fetchOrUpdateSurvey } from "../../features/survey/survey";
+import { selectAnswers, selectTheme } from "../../utils/selectors";
 import { setAnswer } from "../../features/answers/answers";
+import { useQuery } from "react-query";
 
 
 function Survey(){
@@ -17,25 +16,23 @@ function Survey(){
     const questionNext = question + 1;
   
     const dispatch = useDispatch();
-
-    // on utilise useEffect pour lancer la requête au chargement du composant
-    useEffect(() => {
-        dispatch(fetchOrUpdateSurvey);
-    }, [dispatch]);
-
     const theme = useSelector(selectTheme);
-    const survey = useSelector(selectSurvey);
     const answers = useSelector(selectAnswers);
-    const surveyData = survey.data?.surveyData;   
-    const isLoading = survey.status === 'void' || survey.status === 'pending';
+
+    const { data, isLoading, error } = useQuery('survey', async () => {
+        const response = await fetch('http://localhost:8000/survey');
+        const data = await response.json();
+        return data;
+    })
     
-    if(survey.status === 'rejected') {
+    const surveyData = data?.surveyData
+
+    if(error) {
         return <ContentError theme={theme}>Oups il ya un problème</ContentError>
     }
     
     function saveReply(answer){
         dispatch(setAnswer({ questionNumber, answer }));
-       //dispatch(setAnswer({ [questionNumber]: answer }));
     }
 
     return(
@@ -48,7 +45,7 @@ function Survey(){
                 
                     (<Loader />)
                     :
-                    (<ContentQuestion theme={theme}>{surveyData && surveyData[questionNumber]} </ContentQuestion>)
+                    (<ContentQuestion theme={theme}>{ surveyData && surveyData[questionNumber]} </ContentQuestion>)
 
                 }
 
@@ -76,7 +73,7 @@ function Survey(){
 
                 <Link to={`/survey/${questionPrevious}`}>Précédent</Link>
                 
-                {surveyData && surveyData[question + 1] ? 
+                { surveyData && surveyData[question + 1] ? 
                     (<Link to={`/survey/${questionNext}`}>Suivant</Link>)
                     :
                     (<Link to="/results">Resultats</Link>)
